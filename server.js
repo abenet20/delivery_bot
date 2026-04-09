@@ -9,11 +9,74 @@ bot.onText(/\/start/, (msg) => {
   bot.sendMessage(msg.chat.id, 'Welcome to our Delivery Service!', {
     reply_markup: {
       inline_keyboard: [
-        [{ text: 'Open Menu', web_app: { url: webAppUrl } }]
+        // [{ text: 'Open Menu', web_app: { url: webAppUrl } }]
+        [{text: 'signup', callback_data: 'signup'}],
+        [{text: 'login', callback_data: 'login'}]
       ]
     }
   });
 });
+
+bot.on('callback_query', (query) => {
+ const chatId = query.message.chat.id;
+ const data = query.data;
+ const userState = {};
+ const loginCre = {};
+
+ if(data === 'signup'){
+    userState[chatId] = {step: 'name'};
+    bot.sendMessage(chatId, 'please enter your name:');
+
+    
+    bot.on('message', (msg) => {
+    const state = userState[chatId];
+      if (!state) return;
+      if (state.step === 'name') {
+      state.name = msg.text;
+      state.step = 'phone';
+
+      bot.sendMessage(chatId, 'please enter your phone:');
+      }else if (state.step === 'phone') {
+        state.phone = msg.text;
+        const password = '0000';
+      bot.sendMessage(chatId, `${state.name} you're successfully registered. usee your phone ${state.phone} and ${password} as your login credentials`);
+      
+    delete userState[chatId];
+    }
+    });
+
+ }else if(data === 'login'){
+  loginCre[chatId] = {step: 'phone'};
+    bot.sendMessage(chatId, 'Welcome back! please enter your phone number:');
+
+    bot.on('message', (msg) => {
+    const state = loginCre[chatId];
+      if (!state) return;
+      if (state.step === 'phone') {
+      state.phone = msg.text;
+      state.step = 'password';
+
+      bot.sendMessage(chatId, 'please enter your password:');
+      }else if (state.step === 'password') {
+        state.password = msg.text;
+        const password = '0000';
+        const login = () => {
+          return true;
+        }
+
+        if(login){
+          bot.sendMessage(chatId, `${state.name} you're successfully logged in.`);
+        }else{
+          bot.sendMessage(chatId, `unsuccessful`);
+        }
+      
+    delete loginCre[chatId];
+    }
+    });
+
+ }
+
+})
 
 bot.on('message', (msg) => {
   if (msg.web_app_data) {
@@ -22,3 +85,5 @@ bot.on('message', (msg) => {
     
   }
 });
+
+console.log("bot is running.....");
