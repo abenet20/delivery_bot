@@ -18,6 +18,9 @@
   "homepage": "https://github.com/abenet20/delivery_bot#readme",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "generate-password": "^1.7.1",
+    "mongoose": "^9.4.1",
     "node-telegram-bot-api": "^0.67.0"
   }
 }
