@@ -36,7 +36,7 @@ function handleSignup(chatId, msg, userState, bot) {
     const name = state.name;
     const phone = state.phone;
 
-    const signupResult = signup(name, phone, telegramId, password)
+    signup(name, phone, telegramId, password)
       .then((result) => {
         if (result === false) {
           bot.sendMessage(
@@ -44,7 +44,7 @@ function handleSignup(chatId, msg, userState, bot) {
             "User with this phone number already exists. Please try logging in.",
           );
         } else {
-          const userData = `?userId=${signupResult._id}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&role=${signupResult.role}`;
+          const userData = `?userId=${result._id}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&role=${result.role}&telegramId=${chatId}`;
           bot.sendMessage(
             chatId,
             `${name} you're successfully registered. Use phone ${phone} and ${password} as your login credentials.`,

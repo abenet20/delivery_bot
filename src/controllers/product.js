@@ -1,15 +1,19 @@
+require("dotenv").config();
+const { bot } = require("../bot");
 const Product = require("../models/products");
 
-const saveProduct = async (
-  name,
-  description,
-  price,
-  status,
-  category,
-  quantity,
-  photo,
-) => {
+const saveProduct = async (req, res) => {
   try {
+    const {
+      name,
+      description,
+      price,
+      status,
+      category,
+      quantity,
+      photo,
+      telegramId,
+    } = req.body;
     const savedProduct = await Product.create({
       name,
       description,
@@ -19,30 +23,59 @@ const saveProduct = async (
       quantity,
       photo,
     });
-    return savedProduct;
+    bot.sendMessage(telegramId, "product saved successfully");
+    res.status(201).json({
+      success: true,
+      message: "product saved successfully",
+      savedProduct,
+    });
   } catch (error) {
     console.log("failed", error);
-    throw error;
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 
-const updateProduct = async (field, value, key, keyVal) => {
+const updateProduct = async (req, res) => {
   try {
-    const updatedProduct = await Product.updateOne({}, { key: keyVal });
-    return updatedProduct;
+    const {
+      name,
+      description,
+      price,
+      status,
+      category,
+      quantity,
+      photo,
+      telegramId,
+    } = req.body;
+    const updatedProduct = await Product.updateOne(
+      { _id: req.params.id },
+      req.body,
+    );
+    bot.sendMessage(telegramId, "product updated successfully");
+    res.status(201).json({
+      success: true,
+      message: "product updated successfully",
+      updatedProduct,
+    });
   } catch (error) {
     console.log("failed", error);
-    throw error;
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 
-const removeProduct = async (productId) => {
+const removeProduct = async (req, res) => {
   try {
-    const remove = await Product.deleteOne(productId);
-    return remove;
+    const { productId, telegramId } = req.body;
+    const remove = await Product.deleteOne({ _id: productId });
+    bot.sendMessage(telegramId, "product removed successfully");
+    res.status(201).json({
+      success: true,
+      message: "product removed successfully",
+      remove,
+    });
   } catch (error) {
     console.log("failed", error);
-    throw error;
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 

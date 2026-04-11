@@ -2,7 +2,6 @@ require("dotenv").config();
 const TelegramBot = require("node-telegram-bot-api");
 const handleSignup = require("./handlers/signupHandler");
 const handleLogin = require("./handlers/loginHandler");
-const orderHandler = require("./handlers/orderHandler");
 
 const token = process.env.botToken;
 const bot = new TelegramBot(token, { polling: true });
@@ -46,26 +45,6 @@ const runBot = async () => {
         handleSignup(chatId, msg, userState, bot);
       } else if (loginCre[chatId]) {
         handleLogin(chatId, msg, loginCre, bot);
-      } else if (msg.web_app_data) {
-        let webAppData = null;
-        try {
-          webAppData = JSON.parse(msg.web_app_data.data);
-        } catch (err) {
-          console.error(
-            "Failed to parse web app data:",
-            err,
-            msg.web_app_data.data,
-          );
-        }
-
-        console.log(
-          "Received web app data:",
-          webAppData ?? msg.web_app_data.data,
-        );
-
-        if (webAppData && webAppData.type === "order") {
-          await orderHandler(chatId, msg, bot);
-        }
       }
     });
 
@@ -75,4 +54,4 @@ const runBot = async () => {
   }
 };
 
-module.exports = runBot;
+module.exports = { bot, runBot };
