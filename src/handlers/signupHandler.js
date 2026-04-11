@@ -1,5 +1,5 @@
 require("dotenv").config();
-const signup = require("../controllers/signup");
+const signup = require("../controllers/auth/signup");
 const generator = require("generate-password");
 
 const webAppUrl = process.env.miniApp;

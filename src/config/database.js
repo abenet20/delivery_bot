@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const connectDB = async () => {
   await mongoose
-    .connect("mongodb://localhost:27017/delivery_bot")
+    .connect(process.env.MONGO_URI)
     .then(() => console.log("Connected"))
     .catch((err) => console.log(err));
 };

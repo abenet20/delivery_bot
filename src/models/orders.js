@@ -8,6 +8,8 @@ const orderSchema = new mongoose.Schema({
   status: String,
   category: String,
   payment: String,
+  address: String,
+  total: Number,
 });
 
 module.exports = mongoose.model("Order", orderSchema);

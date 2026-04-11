@@ -1,5 +1,5 @@
 require("dotenv").config();
-const login = require("../controllers/login");
+const login = require("../controllers/auth/login");
 
 const webAppUrl = process.env.miniApp;
 
