@@ -34,10 +34,11 @@ function handleLogin(chatId, msg, loginCre, bot) {
     login(phone, telegramId, password)
       .then((user) => {
         if (user) {
+          const userData = `?userId=${user._id}&name=${encodeURIComponent(user.name)}&phone=${encodeURIComponent(user.phone)}&role=${encodeURIComponent(user.role)}`;
           bot.sendMessage(chatId, "You're successfully logged in.", {
             reply_markup: {
               inline_keyboard: [
-                [{ text: "Open Menu", web_app: { url: webAppUrl } }],
+                [{ text: "Open Menu", web_app: { url: webAppUrl + userData } }],
               ],
             },
           });

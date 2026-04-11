@@ -6,7 +6,6 @@ const signup = async (name, phone, telegramId, password) => {
     const hashed = await bcrypt.hash(password, 10);
     const existingUser = await User.findOne({ phone });
     if (existingUser) {
-      // throw new Error("User with this phone number already exists.");
       return false;
     }
 
@@ -15,6 +14,7 @@ const signup = async (name, phone, telegramId, password) => {
       phone,
       telegramId,
       password: hashed,
+      role: "customer",
     });
     return newUser;
   } catch (error) {

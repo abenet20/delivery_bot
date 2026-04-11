@@ -10,13 +10,13 @@
     "type": "git",
     "url": "git+https://github.com/abenet20/delivery_bot.git"
   },
-  "author": "",
+  "author": "Abenet Erbelo",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/abenet20/delivery_bot/issues"
   },
   "homepage": "https://github.com/abenet20/delivery_bot#readme",
-  "description": "",
+  "description": "a bot which helps to manage delivery orders and customers for a delivery company and shops to distribute their products.",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.1",

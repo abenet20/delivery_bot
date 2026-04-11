@@ -26,17 +26,17 @@ function handleSignup(chatId, msg, userState, bot) {
       return;
     }
     const password = generator.generate({
-      length: 8,
+      length: 4,
       numbers: true,
       symbols: false,
       uppercase: false,
-      lowercase: true,
+      lowercase: false,
     });
     const telegramId = chatId;
     const name = state.name;
     const phone = state.phone;
 
-    signup(name, phone, telegramId, password)
+    const signupResult = signup(name, phone, telegramId, password)
       .then((result) => {
         if (result === false) {
           bot.sendMessage(
@@ -44,13 +44,19 @@ function handleSignup(chatId, msg, userState, bot) {
             "User with this phone number already exists. Please try logging in.",
           );
         } else {
+          const userData = `?userId=${signupResult._id}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&role=${signupResult.role}`;
           bot.sendMessage(
             chatId,
             `${name} you're successfully registered. Use phone ${phone} and ${password} as your login credentials.`,
             {
               reply_markup: {
                 inline_keyboard: [
-                  [{ text: "Open Menu", web_app: { url: webAppUrl } }],
+                  [
+                    {
+                      text: "Open Menu",
+                      web_app: { url: webAppUrl + userData },
+                    },
+                  ],
                 ],
               },
             },
