@@ -17,7 +17,7 @@ const saveOrder = async (req, res) => {
       address,
       total,
     } = req.body;
-    const product = Product.findById(productId);
+    const product = await Product.findById(productId);
     const savedOrder = await Order.create({
       userId,
       productId,
