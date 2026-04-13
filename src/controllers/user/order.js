@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { bot } = require("../../bot");
 const Order = require("../../models/orders");
+const Product = require("../../models/products");
 
 const saveOrder = async (req, res) => {
   try {
@@ -16,6 +17,7 @@ const saveOrder = async (req, res) => {
       address,
       total,
     } = req.body;
+    const product = Product.findById(productId);
     const savedOrder = await Order.create({
       userId,
       productId,
@@ -28,7 +30,9 @@ const saveOrder = async (req, res) => {
       total,
     });
 
-    bot.sendMessage(telegramId, "order saved successfully");
+    bot.sendPhoto(telegramId, product.photo, {
+      caption: `New order placed!\n\nProduct: ${product.name}\nQuantity: ${quantity}\nTotal: $${total}`,
+    });
     res
       .status(201)
       .json({ success: true, message: "order saved successfully", savedOrder });

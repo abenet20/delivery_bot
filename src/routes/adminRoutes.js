@@ -26,7 +26,7 @@ router.get("/orders", getOrders);
 router.get("/customers", getCustomers);
 
 router.post("/save-product", fileUpload.single("photo"), saveProduct);
-router.post("/update-product", fileUpload.single("photo"), updateProduct);
+router.put("/update-product", fileUpload.single("photo"), updateProduct);
 router.delete("/remove-product", removeProduct);
 
 module.exports = router;

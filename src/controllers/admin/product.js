@@ -17,7 +17,10 @@ const saveProduct = async (req, res) => {
       quantity,
       photo,
     });
-    bot.sendMessage(telegramId, "product saved successfully");
+
+    bot.sendPhoto(telegramId, photo, {
+      caption: `New product added.\n\nName: ${name}\nDescription: ${description}\nPrice: $${price}`,
+    });
     res.status(201).json({
       success: true,
       message: "product saved successfully",
@@ -46,7 +49,9 @@ const updateProduct = async (req, res) => {
         photo,
       },
     );
-    bot.sendMessage(telegramId, "product updated successfully");
+    bot.sendPhoto(telegramId, photo, {
+      caption: `Product updated.\n\nName: ${name}\nDescription: ${description}\nPrice: $${price}`,
+    });
     res.status(201).json({
       success: true,
       message: "product updated successfully",
