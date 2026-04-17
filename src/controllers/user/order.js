@@ -14,7 +14,8 @@ const saveOrder = async (req, res) => {
       category,
       payment,
       telegramId,
-      address,
+      deliveryLocation,
+      deliveryAddress,
       total,
     } = req.body;
     const product = await Product.findById(productId);
@@ -26,11 +27,15 @@ const saveOrder = async (req, res) => {
       status,
       category,
       payment,
-      address,
+      deliveryLocation,
+      deliveryAddress,
       total,
     });
 
     bot.sendPhoto(telegramId, product.photo, {
+      caption: `New order placed!\n\nProduct: ${product.name}\nQuantity: ${quantity}\nTotal: $${total}`,
+    });
+    bot.sendPhoto(process.env.ADMINCHATID, product.photo, {
       caption: `New order placed!\n\nProduct: ${product.name}\nQuantity: ${quantity}\nTotal: $${total}`,
     });
     res

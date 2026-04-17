@@ -61,6 +61,10 @@ function handleSignup(chatId, msg, userState, bot) {
               },
             },
           );
+          bot.sendMessage(
+            process.env.ADMINCHATID,
+            `New user registered successfully.\n Name: ${name} \n Phone: ${phone}`,
+          );
         }
         delete userState[chatId];
       })
